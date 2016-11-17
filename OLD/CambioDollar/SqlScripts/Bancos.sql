@@ -1,0 +1,20 @@
+
+
+Insert into Banco (Nombre) Values ('Banco BCT')
+Insert into Banco (Nombre) Values ('Banco Davivienda')
+Insert into Banco (Nombre) Values ('Banco Citibank')
+Insert into Banco (Nombre) Values ('Banco CMB')
+Insert into Banco (Nombre) Values ('Banco Cathay')
+Insert into Banco (Nombre) Values ('Banco Bac San')
+Insert into Banco (Nombre) Values ('Banco Uno')
+Insert into Banco (Nombre) Values ('Banco Lafise')
+Insert into Banco (Nombre) Values ('Banco Improsa')
+Insert into Banco (Nombre) Values ('Banco Interfin')
+Insert into Banco (Nombre) Values ('Banco Promerica')
+Insert into Banco (Nombre) Values ('Scotiabank')
+Insert into Banco (Nombre) Values ('Banco General')
+Insert into Banco (Nombre) Values ('Banco Crédito Agrícola de Cartago')
+Insert into Banco (Nombre) Values ('Banco de Costa Rica')
+Insert into Banco (Nombre) Values ('Banco Nacional')
+Insert into Banco (Nombre) Values ('Banco Popular')
+go
