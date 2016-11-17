@@ -1,11 +1,14 @@
-﻿using Microsoft.Azure.Mobile.Server;
+﻿using System;
+using Microsoft.Azure.Mobile.Server;
 
 namespace CRCtoUSDService.DataObjects
 {
-    public class TodoItem : EntityData
+    public class TipoDeCambio : EntityData
     {
-        public string Text { get; set; }
+        public decimal ValorCompra { get; set; }
 
-        public bool Complete { get; set; }
+        public decimal ValorVenta { get; set; }
+
+        public DateTime FechaActualizacion { get; set; }
     }
 }

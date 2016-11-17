@@ -22,7 +22,7 @@ namespace CRCtoUSDService.Models
         {
         } 
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<TipoDeCambio> TiposDeCambio { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -53,15 +53,15 @@ namespace CRCtoUSDService
     {
         protected override void Seed(CRCtoUSDContext context)
         {
-            List<TodoItem> todoItems = new List<TodoItem>
+            List<TipoDeCambio> todoItems = new List<TipoDeCambio>
             {
-                new TodoItem { Id = Guid.NewGuid().ToString(), Text = "First item", Complete = false },
-                new TodoItem { Id = Guid.NewGuid().ToString(), Text = "Second item", Complete = false },
+                new TipoDeCambio { Id = Guid.NewGuid().ToString(), Text = "First item", Complete = false },
+                new TipoDeCambio { Id = Guid.NewGuid().ToString(), Text = "Second item", Complete = false },
             };
 
-            foreach (TodoItem todoItem in todoItems)
+            foreach (TipoDeCambio todoItem in todoItems)
             {
-                context.Set<TodoItem>().Add(todoItem);
+                context.Set<TipoDeCambio>().Add(todoItem);
             }
 
             base.Seed(context);
