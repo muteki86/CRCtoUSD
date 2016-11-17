@@ -173,6 +173,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <None Include="Properties\PublishProfiles\CRCtoUSD - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\CRCtoUSD - Web Deploy.pubxml" />
     <None Include="Service References\BancoCentral\wsIndicadoresEconomicos.disco" />
     <None Include="Service References\BancoCentral\configuration91.svcinfo" />
     <None Include="Service References\BancoCentral\configuration.svcinfo" />

@@ -55,8 +55,7 @@ namespace CRCtoUSDService
         {
             List<TipoDeCambio> todoItems = new List<TipoDeCambio>
             {
-                new TipoDeCambio { Id = Guid.NewGuid().ToString(), Text = "First item", Complete = false },
-                new TipoDeCambio { Id = Guid.NewGuid().ToString(), Text = "Second item", Complete = false },
+                new TipoDeCambio { Id = Guid.NewGuid().ToString(), FechaActualizacion = DateTime.Today, ValorCompra = (decimal) 549.13, ValorVenta = (decimal) 561.8 }
             };
 
             foreach (TipoDeCambio todoItem in todoItems)
