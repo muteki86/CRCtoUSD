@@ -6,13 +6,13 @@ namespace CRCtoUSD
 {
     public partial class TodoList : ContentPage
     {
-        TodoItemManager manager;
+        TipoDeCambioManager manager;
 
         public TodoList()
         {
             InitializeComponent();
 
-            manager = TodoItemManager.DefaultManager;
+            manager = TipoDeCambioManager.DefaultManager;
 
             // OnPlatform<T> doesn't currently support the "Windows" target platform, so we have this check here.
             if (manager.IsOfflineEnabled &&
@@ -38,13 +38,13 @@ namespace CRCtoUSD
         }
 
         // Data methods
-        async Task AddItem(TodoItem item)
+        async Task AddItem(TipoDeCambio item)
         {
             await manager.SaveTaskAsync(item);
             todoList.ItemsSource = await manager.GetTodoItemsAsync();
         }
 
-        async Task CompleteItem(TodoItem item)
+        async Task CompleteItem(TipoDeCambio item)
         {
             item.Done = true;
             await manager.SaveTaskAsync(item);
@@ -53,7 +53,7 @@ namespace CRCtoUSD
 
         public async void OnAdd(object sender, EventArgs e)
         {
-            var todo = new TodoItem { Name = newItemName.Text };
+            var todo = new TipoDeCambio { ValorCompra = newItemName.Text };
             await AddItem(todo);
 
             newItemName.Text = string.Empty;
@@ -63,18 +63,18 @@ namespace CRCtoUSD
         // Event handlers
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var todo = e.SelectedItem as TodoItem;
+            var todo = e.SelectedItem as TipoDeCambio;
             if (Device.OS != TargetPlatform.iOS && todo != null)
             {
                 // Not iOS - the swipe-to-delete is discoverable there
                 if (Device.OS == TargetPlatform.Android)
                 {
-                    await DisplayAlert(todo.Name, "Press-and-hold to complete task " + todo.Name, "Got it!");
+                    await DisplayAlert(todo.ValorCompra, "Press-and-hold to complete task " + todo.ValorCompra, "Got it!");
                 }
                 else
                 {
                     // Windows, not all platforms support the Context Actions yet
-                    if (await DisplayAlert("Mark completed?", "Do you wish to complete " + todo.Name + "?", "Complete", "Cancel"))
+                    if (await DisplayAlert("Mark completed?", "Do you wish to complete " + todo.ValorCompra + "?", "Complete", "Cancel"))
                     {
                         await CompleteItem(todo);
                     }
@@ -89,7 +89,7 @@ namespace CRCtoUSD
         public async void OnComplete(object sender, EventArgs e)
         {
             var mi = ((MenuItem)sender);
-            var todo = mi.CommandParameter as TodoItem;
+            var todo = mi.CommandParameter as TipoDeCambio;
             await CompleteItem(todo);
         }
 

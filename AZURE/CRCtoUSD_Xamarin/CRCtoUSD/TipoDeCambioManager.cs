@@ -23,20 +23,20 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace CRCtoUSD
 {
-    public partial class TodoItemManager
+    public partial class TipoDeCambioManager
     {
-        static TodoItemManager defaultInstance = new TodoItemManager();
+        static TipoDeCambioManager defaultInstance = new TipoDeCambioManager();
         MobileServiceClient client;
 
 #if OFFLINE_SYNC_ENABLED
         IMobileServiceSyncTable<TodoItem> todoTable;
 #else
-        IMobileServiceTable<TodoItem> todoTable;
+        IMobileServiceTable<TipoDeCambio> todoTable;
 #endif
 
         const string offlineDbPath = @"localstore.db";
 
-        private TodoItemManager()
+        private TipoDeCambioManager()
         {
             this.client = new MobileServiceClient(Constants.ApplicationURL);
 
@@ -49,11 +49,11 @@ namespace CRCtoUSD
 
             this.todoTable = client.GetSyncTable<TodoItem>();
 #else
-            this.todoTable = client.GetTable<TodoItem>();
+            this.todoTable = client.GetTable<TipoDeCambio>();
 #endif
         }
 
-        public static TodoItemManager DefaultManager
+        public static TipoDeCambioManager DefaultManager
         {
             get
             {
@@ -72,10 +72,10 @@ namespace CRCtoUSD
 
         public bool IsOfflineEnabled
         {
-            get { return todoTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<TodoItem>; }
+            get { return todoTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<TipoDeCambio>; }
         }
 
-        public async Task<ObservableCollection<TodoItem>> GetTodoItemsAsync(bool syncItems = false)
+        public async Task<ObservableCollection<TipoDeCambio>> GetTodoItemsAsync(bool syncItems = false)
         {
             try
             {
@@ -85,11 +85,11 @@ namespace CRCtoUSD
                     await this.SyncAsync();
                 }
 #endif
-                IEnumerable<TodoItem> items = await todoTable
+                IEnumerable<TipoDeCambio> items = await todoTable
                     .Where(todoItem => !todoItem.Done)
                     .ToEnumerableAsync();
 
-                return new ObservableCollection<TodoItem>(items);
+                return new ObservableCollection<TipoDeCambio>(items);
             }
             catch (MobileServiceInvalidOperationException msioe)
             {
@@ -102,7 +102,7 @@ namespace CRCtoUSD
             return null;
         }
 
-        public async Task SaveTaskAsync(TodoItem item)
+        public async Task SaveTaskAsync(TipoDeCambio item)
         {
             if (item.Id == null)
             {
