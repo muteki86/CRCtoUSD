@@ -33,7 +33,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="TodoList.xaml.cs">
+    <Compile Include="TipoDeCambioForm.xaml.cs">
       <DependentUpon>TipoDeCambioForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />

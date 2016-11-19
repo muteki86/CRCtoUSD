@@ -26,31 +26,18 @@ namespace CRCtoUSD
     public partial class TipoDeCambioManager
     {
         static TipoDeCambioManager defaultInstance = new TipoDeCambioManager();
+
         MobileServiceClient client;
 
-#if OFFLINE_SYNC_ENABLED
-        IMobileServiceSyncTable<TodoItem> todoTable;
-#else
-        IMobileServiceTable<TipoDeCambio> todoTable;
-#endif
+        IMobileServiceTable<TipoDeCambio> tipoDeCambioDiario;
 
-        const string offlineDbPath = @"localstore.db";
 
         private TipoDeCambioManager()
         {
-            this.client = new MobileServiceClient(Constants.ApplicationURL);
+            client = new MobileServiceClient(Constants.ApplicationURL);
 
-#if OFFLINE_SYNC_ENABLED
-            var store = new MobileServiceSQLiteStore(offlineDbPath);
-            store.DefineTable<TodoItem>();
+            tipoDeCambioDiario = client.GetTable<TipoDeCambio>();
 
-            //Initializes the SyncContext using the default IMobileServiceSyncHandler.
-            this.client.SyncContext.InitializeAsync(store);
-
-            this.todoTable = client.GetSyncTable<TodoItem>();
-#else
-            this.todoTable = client.GetTable<TipoDeCambio>();
-#endif
         }
 
         public static TipoDeCambioManager DefaultManager
@@ -70,26 +57,15 @@ namespace CRCtoUSD
             get { return client; }
         }
 
-        public bool IsOfflineEnabled
-        {
-            get { return todoTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<TipoDeCambio>; }
-        }
-
-        public async Task<ObservableCollection<TipoDeCambio>> GetTodoItemsAsync(bool syncItems = false)
+        public async Task<TipoDeCambio> GetCurrentExchangeAsync()
         {
             try
             {
-#if OFFLINE_SYNC_ENABLED
-                if (syncItems)
-                {
-                    await this.SyncAsync();
-                }
-#endif
-                IEnumerable<TipoDeCambio> items = await todoTable
-                    .Where(todoItem => !todoItem.Done)
+                IEnumerable<TipoDeCambio> items = await tipoDeCambioDiario
+					.Where(todoItem => todoItem.FechaActualizacion == DateTime.Today)
                     .ToEnumerableAsync();
 
-                return new ObservableCollection<TipoDeCambio>(items);
+				return items.FirstOrDefault();
             }
             catch (MobileServiceInvalidOperationException msioe)
             {
@@ -101,63 +77,5 @@ namespace CRCtoUSD
             }
             return null;
         }
-
-        public async Task SaveTaskAsync(TipoDeCambio item)
-        {
-            if (item.Id == null)
-            {
-                await todoTable.InsertAsync(item);
-            }
-            else
-            {
-                await todoTable.UpdateAsync(item);
-            }
-        }
-
-#if OFFLINE_SYNC_ENABLED
-        public async Task SyncAsync()
-        {
-            ReadOnlyCollection<MobileServiceTableOperationError> syncErrors = null;
-
-            try
-            {
-                await this.client.SyncContext.PushAsync();
-
-                await this.todoTable.PullAsync(
-                    //The first parameter is a query name that is used internally by the client SDK to implement incremental sync.
-                    //Use a different query name for each unique query in your program
-                    "allTodoItems",
-                    this.todoTable.CreateQuery());
-            }
-            catch (MobileServicePushFailedException exc)
-            {
-                if (exc.PushResult != null)
-                {
-                    syncErrors = exc.PushResult.Errors;
-                }
-            }
-
-            // Simple error/conflict handling. A real application would handle the various errors like network conditions,
-            // server conflicts and others via the IMobileServiceSyncHandler.
-            if (syncErrors != null)
-            {
-                foreach (var error in syncErrors)
-                {
-                    if (error.OperationKind == MobileServiceTableOperationKind.Update && error.Result != null)
-                    {
-                        //Update failed, reverting to server's copy.
-                        await error.CancelAndUpdateItemAsync(error.Result);
-                    }
-                    else
-                    {
-                        // Discard local change.
-                        await error.CancelAndDiscardItemAsync();
-                    }
-
-                    Debug.WriteLine(@"Error executing sync operation. Item: {0} ({1}). Operation discarded.", error.TableName, error.Item["id"]);
-                }
-            }
-        }
-#endif
     }
 }

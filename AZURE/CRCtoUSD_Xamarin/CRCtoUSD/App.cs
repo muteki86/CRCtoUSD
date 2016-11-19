@@ -9,7 +9,7 @@ namespace CRCtoUSD
 		public App ()
 		{
 			// The root page of your application
-			MainPage = new TodoList();
+			MainPage = new TipoDeCambioForm();
 		}
 
 		protected override void OnStart ()
