@@ -23,88 +23,6 @@ namespace CRCtoUSD
             await RefreshItems(true);
         }
 
-        //async Task CompleteItem(TipoDeCambio item)
-        //{
-            //item. = true;
-            //await manager.SaveTaskAsync(item);
-            //todoList.ItemsSource = await manager.GetTodoItemsAsync();
-        //}
-
-        //public async void OnAdd(object sender, EventArgs e)
-        //{
-            //var todo = new TipoDeCambio { ValorCompra = newItemName.Text };
-            //await AddItem(todo);
-
-            //newItemName.Text = string.Empty;
-            //newItemName.Unfocus();
-        //}
-
-        // Event handlers
-		/*
-        public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var todo = e.SelectedItem as TipoDeCambio;
-            if (Device.OS != TargetPlatform.iOS && todo != null)
-            {
-                // Not iOS - the swipe-to-delete is discoverable there
-                if (Device.OS == TargetPlatform.Android)
-                {
-                    //await DisplayAlert(todo.ValorCompra, "Press-and-hold to complete task " + todo.ValorCompra, "Got it!");
-                }
-                else
-                {
-                    // Windows, not all platforms support the Context Actions yet
-                    if (await DisplayAlert("Mark completed?", "Do you wish to complete " + todo.ValorCompra + "?", "Complete", "Cancel"))
-                    {
-                        await CompleteItem(todo);
-                    }
-                }
-            }
-
-            // prevents background getting highlighted
-            todoList.SelectedItem = null;
-        }
-        */
-
-        // http://developer.xamarin.com/guides/cross-platform/xamarin-forms/working-with/listview/#context
-        /*
-		public async void OnComplete(object sender, EventArgs e)
-        {
-            var mi = ((MenuItem)sender);
-            var todo = mi.CommandParameter as TipoDeCambio;
-            await CompleteItem(todo);
-        }
-        */
-
-        // http://developer.xamarin.com/guides/cross-platform/xamarin-forms/working-with/listview/#pulltorefresh
-        public async void OnRefresh(object sender, EventArgs e)
-        {
-            var list = (ListView)sender;
-            Exception error = null;
-            try
-            {
-                await RefreshItems(false);
-            }
-            catch (Exception ex)
-            {
-                error = ex;
-            }
-            finally
-            {
-                list.EndRefresh();
-            }
-
-            if (error != null)
-            {
-                await DisplayAlert("Refresh Error", "Couldn't refresh data (" + error.Message + ")", "OK");
-            }
-        }
-
-        public async void OnSyncItems(object sender, EventArgs e)
-        {
-            await RefreshItems(true);
-        }
-
         private async Task RefreshItems(bool showActivityIndicator)
         {
             using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
@@ -114,6 +32,30 @@ namespace CRCtoUSD
 				valorVenta.Text = todaysTipoDeCambio.ValorVenta.ToString();
             }
         }
+
+		public void OnCalculateButtonClicked(object sender, EventArgs args)
+		{
+			Button button = (Button)sender;
+			if (button.Text == "Get CRC")
+			{
+				decimal usdAmount;
+				var isUsdAmount = decimal.TryParse(usdEntry.Text, out usdAmount);
+
+				if (isUsdAmount)
+				{
+					crcEntry.Text = String.Format("{0:0.##}",(usdAmount * decimal.Parse(valorVenta.Text)));
+				}
+			}
+			else {
+				decimal crcAmount;
+				var isCrcAmount = decimal.TryParse(crcEntry.Text, out crcAmount);
+
+				if (isCrcAmount)
+				{
+					usdEntry.Text = String.Format("{0:0.##}",(crcAmount / decimal.Parse(valorVenta.Text)));
+				}
+			}
+		}
 
         private class ActivityIndicatorScope : IDisposable
         {
@@ -150,6 +92,7 @@ namespace CRCtoUSD
                     indicatorDelay.ContinueWith(t => SetIndicatorActivity(false), TaskScheduler.FromCurrentSynchronizationContext());
                 }
             }
+
         }
     }
 }
