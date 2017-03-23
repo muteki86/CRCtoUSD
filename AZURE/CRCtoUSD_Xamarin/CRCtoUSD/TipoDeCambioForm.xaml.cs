@@ -27,9 +27,13 @@ namespace CRCtoUSD
         {
             using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
             {
+				usdEntry.IsEnabled = false;
+				crcEntry.IsEnabled = false;
 				var todaysTipoDeCambio = await manager.GetCurrentExchangeAsync();
 				valorCompra.Text = todaysTipoDeCambio.ValorCompra.ToString();
 				valorVenta.Text = todaysTipoDeCambio.ValorVenta.ToString();
+				usdEntry.IsEnabled = true;
+				crcEntry.IsEnabled = true;
             }
         }
 
@@ -43,7 +47,7 @@ namespace CRCtoUSD
 
 				if (isUsdAmount)
 				{
-					crcEntry.Text = String.Format("{0:0.##}",(usdAmount * decimal.Parse(valorVenta.Text)));
+					crcEntry.Text = String.Format("{0:0.##}",(usdAmount * decimal.Parse(valorCompra.Text)));
 				}
 			}
 			else {

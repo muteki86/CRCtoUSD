@@ -6,8 +6,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		<ActivityIndicator Grid.RowSpan="2" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="False" IsEnabled="True" x:Name="syncIndicator" />
-		<StackLayout Grid.Row="0"  Padding="10,30,10,10"  BackgroundColor="#5ABAFF" >
+		<StackLayout Grid.Row="0"  Padding="10,30,10,10"  >
 			<Label x:Name="title1" FontSize="27" Text="CRC to USD">
 			</Label>
 		</StackLayout>
@@ -30,6 +29,7 @@
 			</StackLayout>
 		</StackLayout>
 		<StackLayout Grid.Row="2" BackgroundColor="#5ABAFF" Padding="10,5,10,5">
+			<ActivityIndicator Grid.RowSpan="2" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="False" IsEnabled="True" x:Name="syncIndicator" />
 			<StackLayout Orientation="Horizontal">
 				<Label x:Name="valorCompraLbl" Text="Compra/Buy:">
 				</Label>
@@ -42,6 +42,10 @@
 				<Label x:Name="valorVenta" Text="0.00">
 				</Label>
 			</StackLayout>
+			<Label Text="* Exchange Information downloaded from the Banco Central De Costa Rica. Actual exchange rate at different banks might differ." FontSize="11">
+				</Label>
+			<Label Text="* Conversion is made using the Buy value when going from CRC to USD, and the Sell value when going from USD to CRC" FontSize="11">
+				</Label>
 		</StackLayout>
 	</Grid>
 </ContentPage>
