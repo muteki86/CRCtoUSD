@@ -23,6 +23,8 @@
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
     <MtouchProfiling>true</MtouchProfiling>
+    <CodesignProvision>6c4e383f-b8b5-41e2-9b91-085030257337</CodesignProvision>
+    <CodesignKey>iPhone Distribution: Francisco Rodriguez (4T6MW9TCE2)</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
